@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+/* HOME BACKGROUND */
+.bg-default {
+    background: url("bg1.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* DEMO BACKGROUND */
+.bg-demo {
+    background: url("bg2.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* HISTORY BACKGROUND */
+.bg-history {
+    background: url("bg3.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* DARK OVERLAY */
+.overlay {
+    background: rgba(0, 0, 0, 0.6);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* HEADER */
+header {
+    text-align: center;
+    padding: 20px;
+}
+
+nav a {
+    margin: 10px;
+    color: #00ffd5;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* CARD BOX */
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    width: 60%;
+    margin: auto;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* BUTTONS */
+button {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+
+    /* ANIMATION ADDED */
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.08);
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.3);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.box {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+    background: rgba(0,255,213,0.2);
+}
