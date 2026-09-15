@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis — {{ role }}</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh; padding: 28px; color: #e5e7eb;
+            background:
+                radial-gradient(circle at top, rgba(59, 130, 246, 0.18), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.10), transparent 28%),
+                linear-gradient(135deg, #08111d, #0f172a 45%, #111827);
+        }
+        .wrapper { max-width: 1000px; margin: auto; }
+        .topbar {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 16px; margin-bottom: 22px; flex-wrap: wrap;
+        }
+        .nav a { color: #22d3ee; text-decoration: none; font-weight: 700; margin-right: 18px; }
+        .nav a:hover { color: #93c5fd; }
+        .back-btn {
+            display: inline-block; padding: 11px 16px; border-radius: 12px;
+            background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.08);
+            color: #67e8f9; text-decoration: none; font-size: 14px; font-weight: 700;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.92); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 22px; padding: 26px 28px; margin-bottom: 22px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.32);
+        }
+        h2 { margin: 0 0 14px; color: #fff; font-size: 22px; font-weight: 800; }
+        .muted { color: #94a3b8; font-size: 14px; }
+        .role-head h1 { margin: 0; color: #fff; font-size: 30px; font-weight: 800; }
+        .role-head .auto {
+            display: inline-block; margin-top: 8px; padding: 5px 12px; border-radius: 999px;
+            background: rgba(6,182,212,0.14); color: #67e8f9; font-size: 12px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .5px;
+        }
+        .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 6px; }
+        .chip {
+            padding: 7px 13px; border-radius: 999px; font-size: 13px; font-weight: 600;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+        }
+        .chip.have { background: rgba(34,197,94,0.14); border-color: rgba(34,197,94,0.30); color: #bbf7d0; }
+        .chip.missing { background: rgba(244,63,94,0.14); border-color: rgba(251,113,133,0.30); color: #fecdd3; }
+        .chip.found { background: rgba(34,211,238,0.12); border-color: rgba(34,211,238,0.28); color: #a5f3fc; }
+        .stat-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+        .badge {
+            padding: 8px 16px; border-radius: 999px; font-weight: 800; font-size: 15px;
+            background: rgba(37,99,235,0.18); color: #bfdbfe;
+        }
+        .bar-track {
+            flex: 1; min-width: 220px; height: 16px; border-radius: 999px;
+            background: rgba(255,255,255,0.08); overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%; border-radius: 999px;
+            background: linear-gradient(90deg, #06b6d4, #2563eb);
+        }
+        .label-sm { font-weight: 700; color: #cbd5e1; margin: 18px 0 6px; }
+        .phase {
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;
+            padding: 18px 20px; margin-bottom: 16px; background: rgba(15,23,42,0.85);
+        }
+        .phase-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+        .phase-head .title { font-size: 17px; font-weight: 800; color: #fff; }
+        .phase-head .window {
+            font-size: 13px; font-weight: 700; color: #67e8f9;
+            background: rgba(6,182,212,0.14); padding: 5px 11px; border-radius: 999px; white-space: nowrap;
+        }
+        .phase .focus { color: #94a3b8; font-size: 13.5px; margin: 8px 0 14px; line-height: 1.55; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 9px 8px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        th { color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+        td .day { color: #67e8f9; font-weight: 700; white-space: nowrap; }
+        .demand-dots { color: #fbbf24; letter-spacing: 1px; }
+        .conclusion {
+            background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(37,99,235,0.12));
+            border: 1px solid rgba(34,211,238,0.25);
+        }
+        .ba { display: flex; gap: 18px; flex-wrap: wrap; margin: 14px 0 6px; }
+        .ba .box {
+            flex: 1; min-width: 200px; background: rgba(15,23,42,0.85);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px 18px;
+        }
+        .ba .box .k { color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+        .ba .box .v { font-size: 26px; font-weight: 800; color: #fff; margin-top: 4px; }
+        .ba .box .v.good { color: #6ee7b7; }
+        .arrow { align-self: center; font-size: 26px; color: #67e8f9; font-weight: 800; }
+        .switch { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+        .switch select {
+            padding: 11px 12px; border-radius: 11px; background: rgba(15,23,42,0.95);
+            color: #e5e7eb; border: 1px solid rgba(255,255,255,0.10); font-size: 14px; min-width: 220px;
+        }
+        .switch button {
+            padding: 11px 18px; border-radius: 11px; border: none; cursor: pointer; font-weight: 700;
+            background: linear-gradient(90deg,#06b6d4,#2563eb); color: #fff; font-size: 14px;
+        }
+        @media (max-width: 600px) { .arrow { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="topbar">
+            <div class="nav">
+                <a href="/">Home</a>
+                <a href="/resume-form">Scan another</a>
+                {% if user_name %}<a href="/history">History</a>{% endif %}
+            </div>
+            <a href="/" class="back-btn">← Home</a>
+        </div>
+
+        <!-- Role + extracted skills -->
+        <div class="card role-head">
+            <h1>Resume Analysis — {{ role }}</h1>
+            {% if auto_detected %}
+                <span class="auto">Auto-detected best fit</span>
+            {% endif %}
+            <p class="muted" style="margin-top:14px;">
+                We found <strong>{{ found_skills|length }}</strong> recognised skills in your resume:
+            </p>
+            <div class="chips">
+                {% for s in found_skills %}<span class="chip found">{{ s }}</span>{% endfor %}
+            </div>
+        </div>
+
+        <!-- Readiness for the role -->
+        <div class="card">
+            <h2>Where you stand for {{ role }}</h2>
+            <div class="stat-row">
+                <span class="badge">{{ gap.readiness }}</span>
+                <div class="bar-track"><div class="bar-fill" style="width: {{ gap.coverage_percent }}%;"></div></div>
+                <strong>{{ gap.coverage_percent }}%</strong>
+            </div>
+            <p class="muted" style="margin-top:10px;">Coverage of the essential + intermediate skills this role needs.</p>
+
+            {% if gap.have_essential or gap.have_intermediate %}
+            <div class="label-sm">Skills you already have for this role</div>
+            <div class="chips">
+                {% for s in gap.have_essential %}<span class="chip have">{{ s }}</span>{% endfor %}
+                {% for s in gap.have_intermediate %}<span class="chip have">{{ s }}</span>{% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="label-sm">Missing — essential (learn these first)</div>
+            <div class="chips">
+                {% if gap.missing_essential %}
+                    {% for s in gap.missing_essential %}<span class="chip missing">{{ s }}</span>{% endfor %}
+                {% else %}<span class="muted">None — you have every essential skill. 🎉</span>{% endif %}
+            </div>
+
+            <div class="label-sm">Missing — intermediate</div>
+            <div class="chips">
+                {% if gap.missing_intermediate %}
+                    {% for s in gap.missing_intermediate %}<span class="chip missing">{{ s }}</span>{% endfor %}
+                {% else %}<span class="muted">None.</span>{% endif %}
+            </div>
+        </div>
+
+        <!-- Learning plan (dynamic length) -->
+        <div class="card">
+            <h2>Your learning plan
+                <span class="muted" style="font-size:14px; font-weight:600;">
+                    — about {{ plan.total_days }} days ({{ plan.total_weeks }} weeks) at a steady part-time pace
+                </span>
+            </h2>
+            <p class="muted">
+                The timeline is calculated from exactly what you're missing — each skill is given a realistic
+                study window and slotted into sequential days. Move faster and the dates compress.
+            </p>
+
+            {% if plan.phases %}
+                {% for ph in plan.phases %}
+                <div class="phase">
+                    <div class="phase-head">
+                        <span class="title">{{ ph.title }}</span>
+                        <span class="window">Day {{ ph.day_start }} – {{ ph.day_end }}</span>
+                    </div>
+                    <div class="focus">{{ ph.focus }}</div>
+                    <table>
+                        <thead><tr><th>Skill</th><th>Days</th><th>Demand</th></tr></thead>
+                        <tbody>
+                        {% for it in ph["items"] %}
+                            <tr>
+                                <td>{{ it.skill }}</td>
+                                <td><span class="day">Day {{ it.day_start }}–{{ it.day_end }}</span>
+                                    <span class="muted">({{ it.days }}d)</span></td>
+                                <td><span class="demand-dots">{{ "●" * (it.demand // 2) }}</span>
+                                    <span class="muted">{{ it.demand }}/10</span></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="muted">No gaps to fill for this role — your resume already covers the essentials and core skills.</p>
+            {% endif %}
+        </div>
+
+        <!-- Conclusion: skilled-up resume -->
+        <div class="card conclusion">
+            <h2>After the plan — your skilled-up resume</h2>
+            {% if conclusion.new_skill_count > 0 %}
+                <p class="muted">
+                    Complete the foundation + core phases (about
+                    <strong>{{ plan.days_to_ready }} days / {{ plan.weeks_to_ready }} weeks</strong>)
+                    and here's how your profile for <strong>{{ role }}</strong> changes:
+                </p>
+                <div class="ba">
+                    <div class="box">
+                        <div class="k">Today</div>
+                        <div class="v">{{ conclusion.now_readiness }}</div>
+                        <div class="muted">{{ conclusion.now_coverage }}% coverage</div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="box">
+                        <div class="k">After the plan</div>
+                        <div class="v good">{{ conclusion.projected_readiness }}</div>
+                        <div class="muted">{{ conclusion.projected_coverage }}% coverage</div>
+                    </div>
+                </div>
+                <div class="label-sm">New skills your resume will gain ({{ conclusion.new_skill_count }})</div>
+                <div class="chips">
+                    {% for s in conclusion.new_skills %}<span class="chip have">{{ s }}</span>{% endfor %}
+                </div>
+                {% if conclusion.advanced_bonus %}
+                <div class="label-sm">Then, to truly stand out (advanced edge)</div>
+                <div class="chips">
+                    {% for s in conclusion.advanced_bonus %}<span class="chip">{{ s }}</span>{% endfor %}
+                </div>
+                {% endif %}
+                <p class="muted" style="margin-top:16px;">
+                    Bottom line: finish this plan and you move from a
+                    <strong>{{ conclusion.now_readiness }}</strong> profile to a
+                    <strong>{{ conclusion.projected_readiness }}</strong>, job-ready resume for {{ role }}.
+                </p>
+            {% else %}
+                <p class="muted">
+                    Your resume already covers the essential and core skills for <strong>{{ role }}</strong> —
+                    you're at a <strong>{{ conclusion.now_readiness }}</strong> level. Focus on the advanced
+                    edge skills above to differentiate yourself further.
+                </p>
+            {% endif %}
+        </div>
+
+        <!-- Re-run against a different role with the same skills -->
+        <div class="card">
+            <h2>Check a different role</h2>
+            <p class="muted">Run the same extracted skills against another role.</p>
+            <form class="switch" action="/gap" method="POST">
+                <input type="hidden" name="skills" value="{{ found_skills | join(', ') }}">
+                <select name="role">
+                    {% for r in roles %}
+                        <option value="{{ r }}" {% if r == role %}selected{% endif %}>{{ r }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Analyze gap</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Recommendations</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 28px;
+            color: #e5e7eb;
+            background:
+                radial-gradient(circle at top, rgba(59, 130, 246, 0.20), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.10), transparent 28%),
+                linear-gradient(135deg, #08111d, #0f172a 45%, #111827);
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .title-box {
+            flex: 1;
+            min-width: 260px;
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 24px 28px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .title-box h1 {
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .title-box p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #67e8f9;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+            border-color: rgba(34, 211, 238, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .recommend-card {
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .recommend-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .recommend-title {
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .recommend-badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(6, 182, 212, 0.14);
+            color: #67e8f9;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 24px 0 28px;
+        }
+
+        .meta-box {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .meta-label {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            color: #ffffff;
+            font-size: 21px;
+            font-weight: 800;
+            line-height: 1.4;
+        }
+
+        .section {
+            margin-top: 24px;
+        }
+
+        .section h3 {
+            margin: 0 0 14px 0;
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .section-sub {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        .skill-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .skill-item {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 14px 16px;
+            color: #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .skill-name {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .skill-score {
+            color: #67e8f9;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .simple-item {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 14px 16px;
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 18px;
+            }
+
+            .title-box,
+            .recommend-card {
+                padding: 20px;
+            }
+
+            .title-box h1 {
+                font-size: 24px;
+            }
+
+            .recommend-title {
+                font-size: 20px;
+            }
+
+            .meta-value {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="topbar">
+            <div class="title-box">
+                <h1>Skill Recommendations</h1>
+                <p>Recommended skills and role information for your selected career path.</p>
+            </div>
+            <a href="/" class="back-btn">← Back</a>
+        </div>
+
+        <div class="recommend-card">
+            <div class="recommend-head">
+                <h2 class="recommend-title">{{ rec.role.upper() }}</h2>
+                <span class="recommend-badge">Career Roadmap</span>
+            </div>
+
+            <div class="meta-grid">
+                <div class="meta-box">
+                    <div class="meta-label">Demand Score</div>
+                    <div class="meta-value">{{ rec.demand }}/100</div>
+                </div>
+
+                <div class="meta-box">
+                    <div class="meta-label">Average Salary</div>
+                    <div class="meta-value">{{ rec.avg_salary }}</div>
+                </div>
+
+                <div class="meta-box">
+                    <div class="meta-label">Growth</div>
+                    <div class="meta-value">{{ rec.growth }}</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Essential Skills</h3>
+                <div class="section-sub">Must-have skills to apply confidently.</div>
+                <div class="skill-list">
+                    {% for s in rec.essential %}
+                    <div class="skill-item">
+                        <span class="skill-name">{{ s }}</span>
+                        <span class="skill-score">Demand: {{ demand_map.get(s, 5) }}/10</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Intermediate Skills</h3>
+                <div class="section-sub">Important for growth after the foundation stage.</div>
+                <div class="skill-list">
+                    {% for s in rec.intermediate %}
+                    <div class="simple-item">{{ s }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Advanced Skills</h3>
+                <div class="section-sub">Senior-level skills to build long-term expertise.</div>
+                <div class="skill-list">
+                    {% for s in rec.advanced %}
+                    <div class="simple-item">{{ s }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

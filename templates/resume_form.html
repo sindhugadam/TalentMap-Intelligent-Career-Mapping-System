@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Scanner</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 28px;
+            color: #e5e7eb;
+            background:
+                radial-gradient(circle at top center, rgba(37, 99, 235, 0.20), transparent 30%),
+                radial-gradient(circle at left top, rgba(6, 182, 212, 0.08), transparent 24%),
+                linear-gradient(135deg, #081018, #0f172a 45%, #111827);
+        }
+        .wrapper { max-width: 760px; margin: auto; }
+        .topbar {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 16px; margin-bottom: 26px; flex-wrap: wrap;
+        }
+        .nav a {
+            color: #22d3ee; text-decoration: none; font-weight: 700;
+            margin-right: 18px; font-size: 16px;
+        }
+        .nav a:hover { color: #93c5fd; }
+        .back-btn {
+            display: inline-block; padding: 11px 16px; border-radius: 12px;
+            background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.08);
+            color: #67e8f9; text-decoration: none; font-size: 14px; font-weight: 700;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px; padding: 34px 32px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+        .card h1 { margin: 0 0 8px; color: #fff; font-size: 30px; font-weight: 800; }
+        .card .sub { margin: 0 0 26px; color: #94a3b8; font-size: 16px; line-height: 1.6; }
+        label { display: block; font-weight: 700; margin: 18px 0 8px; color: #cbd5e1; }
+        input[type="file"], select {
+            width: 100%; padding: 13px 14px; border-radius: 12px;
+            background: rgba(15, 23, 42, 0.95); color: #e5e7eb;
+            border: 1px solid rgba(255,255,255,0.10); font-size: 15px;
+        }
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(90deg, #06b6d4, #2563eb); color: #fff;
+            border: none; padding: 9px 14px; border-radius: 9px; margin-right: 12px;
+            cursor: pointer; font-weight: 700;
+        }
+        .hint { color: #64748b; font-size: 13px; margin-top: 7px; }
+        button.submit {
+            margin-top: 28px; width: 100%;
+            background: linear-gradient(90deg, #06b6d4, #2563eb); color: #fff;
+            border: none; padding: 16px; font-size: 19px; border-radius: 14px;
+            cursor: pointer; font-weight: 700; transition: transform .2s ease;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+        }
+        button.submit:hover { transform: translateY(-2px); }
+        .flash {
+            background: rgba(244, 63, 94, 0.14); border: 1px solid rgba(251,113,133,0.30);
+            color: #fecdd3; padding: 13px 16px; border-radius: 12px; margin-bottom: 18px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="topbar">
+            <div class="nav">
+                <a href="/">Home</a>
+                <a href="/demo">Demo</a>
+                {% if user_name %}<a href="/history">History</a>{% endif %}
+            </div>
+            <a href="/" class="back-btn">← Home</a>
+        </div>
+
+        <div class="card">
+            <h1>Resume Skill Scanner</h1>
+            <p class="sub">
+                Upload your resume and we'll read the skills you already have,
+                compare them against your target role, then build a day-by-day
+                plan to close the gaps and skill up your resume.
+            </p>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="/resume" method="POST" enctype="multipart/form-data">
+                <label for="resume">Your resume</label>
+                <input type="file" id="resume" name="resume" accept=".pdf,.docx,.txt" required>
+                <div class="hint">Accepted: PDF, DOCX, or TXT (max 5 MB). Text-based files work best.</div>
+
+                <label for="role">Target role</label>
+                <select id="role" name="role">
+                    <option value="">Auto-detect best match for me</option>
+                    {% for r in roles %}
+                        <option value="{{ r }}">{{ r }}</option>
+                    {% endfor %}
+                </select>
+                <div class="hint">Leave on auto-detect and we'll pick the role your skills fit best.</div>
+
+                <button type="submit" class="submit">Scan my resume</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Output</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 28px;
+            color: #e5e7eb;
+            background:
+                radial-gradient(circle at top, rgba(59, 130, 246, 0.20), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.10), transparent 28%),
+                linear-gradient(135deg, #08111d, #0f172a 45%, #111827);
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .title-box {
+            flex: 1;
+            min-width: 260px;
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 24px 28px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .title-box h1 {
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .title-box p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #67e8f9;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+            border-color: rgba(34, 211, 238, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .demo-card {
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+        }
+
+        .demo-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .demo-tag {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(6, 182, 212, 0.14);
+            color: #67e8f9;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 18px;
+            padding: 20px;
+        }
+
+        .info-box h3 {
+            margin: 0 0 14px 0;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-chip {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(6, 182, 212, 0.12);
+            border: 1px solid rgba(103, 232, 249, 0.18);
+            color: #e0f2fe;
+            font-size: 14px;
+        }
+
+        .skill-chip.missing {
+            background: rgba(244, 63, 94, 0.12);
+            border-color: rgba(251, 113, 133, 0.20);
+            color: #fecdd3;
+        }
+
+        .skill-chip.have {
+            background: rgba(34, 197, 94, 0.12);
+            border-color: rgba(134, 239, 172, 0.20);
+            color: #dcfce7;
+        }
+
+        .skill-chip.intermediate {
+            background: rgba(250, 204, 21, 0.10);
+            border-color: rgba(253, 224, 71, 0.20);
+            color: #fef9c3;
+        }
+
+        .empty-text {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 14px;
+        }
+
+        th {
+            color: #67e8f9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        td {
+            color: #e5e7eb;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .roadmap-phase {
+            margin-bottom: 16px;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .roadmap-phase h4 {
+            margin: 0 0 10px 0;
+            color: #67e8f9;
+            font-size: 16px;
+        }
+
+        .roadmap-phase ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+
+        .subheading {
+            margin: 24px 0 14px 0;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 18px;
+            }
+
+            .demo-card,
+            .title-box {
+                padding: 20px;
+            }
+
+            .title-box h1 {
+                font-size: 24px;
+            }
+
+            .demo-title {
+                font-size: 20px;
+            }
+
+            th, td {
+                padding: 12px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="topbar">
+            <div class="title-box">
+                <h1>Demo Dashboard</h1>
+                <p>View recommendation results, gap analysis, and career match insights in a cleaner structured format.</p>
+            </div>
+            <a href="{{ url_for('home') }}" class="back-btn">← Home</a>
+        </div>
+
+        {% for d in demos %}
+        <div class="demo-card">
+            {% if d.type == "recommend" %}
+            <div class="demo-header">
+                <h2 class="demo-title">Skill Recommendations for {{ d.rec.role }}</h2>
+                <span class="demo-tag">Recommendation</span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Demand Score</div>
+                    <div class="stat-value">{{ d.rec.demand }}/100</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Average Salary</div>
+                    <div class="stat-value">{{ d.rec.avg_salary }}</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Growth</div>
+                    <div class="stat-value">{{ d.rec.growth }}</div>
+                </div>
+            </div>
+
+            <h3 class="subheading">Essential Skills</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Skill</th>
+                        <th>Demand</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in d.rec.essential %}
+                    <tr>
+                        <td>{{ s }}</td>
+                        <td>{{ demand_map.get(s, 5) }}/10</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="section-grid">
+                <div class="info-box">
+                    <h3>Intermediate Skills</h3>
+                    <div class="skill-list">
+                        {% for s in d.rec.intermediate %}
+                        <span class="skill-chip intermediate">{{ s }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>Advanced Skills</h3>
+                    <div class="skill-list">
+                        {% for s in d.rec.advanced %}
+                        <span class="skill-chip">{{ s }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {% elif d.type == "gap" %}
+            <div class="demo-header">
+                <h2 class="demo-title">Skill Gap Analysis for {{ d.gap.role }}</h2>
+                <span class="demo-tag">Gap Analysis</span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Readiness</div>
+                    <div class="stat-value">{{ d.gap.readiness }}</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Coverage</div>
+                    <div class="stat-value">{{ d.gap.coverage_percent }}%</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Target Role</div>
+                    <div class="stat-value">{{ d.gap.role }}</div>
+                </div>
+            </div>
+
+            <div class="section-grid">
+                <div class="info-box">
+                    <h3>Your Skills</h3>
+                    <div class="skill-list">
+                        {% for s in d.gap.user_skills %}
+                        <span class="skill-chip">{{ s }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>Have Essential Skills</h3>
+                    <div class="skill-list">
+                        {% if d.gap.have_essential %}
+                            {% for s in d.gap.have_essential %}
+                            <span class="skill-chip have">{{ s }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <p class="empty-text">No essential skills matched.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>Missing Essential Skills</h3>
+                    <div class="skill-list">
+                        {% if d.gap.missing_essential %}
+                            {% for s in d.gap.missing_essential %}
+                            <span class="skill-chip missing">{{ s }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <p class="empty-text">No essential skills missing.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>Missing Intermediate Skills</h3>
+                    <div class="skill-list">
+                        {% if d.gap.missing_intermediate %}
+                            {% for s in d.gap.missing_intermediate %}
+                            <span class="skill-chip intermediate">{{ s }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <p class="empty-text">No intermediate skills missing.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="subheading">Learning Roadmap</h3>
+            {% for phase, skills in d.gap.roadmap.items() %}
+            <div class="roadmap-phase">
+                <h4>{{ phase }}</h4>
+                <ul>
+                    {% for s in skills %}
+                    <li>{{ s }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+
+            {% elif d.type == "match" %}
+            <div class="demo-header">
+                <h2 class="demo-title">Career Match Results</h2>
+                <span class="demo-tag">Career Match</span>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Match %</th>
+                        <th>Essential Skills Match</th>
+                        <th>Demand</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for role, pct, ess, demand, salary in d.matches %}
+                    <tr>
+                        <td>{{ role }}</td>
+                        <td>{{ pct }}%</td>
+                        <td>{{ ess }}</td>
+                        <td>{{ demand }}</td>
+                        <td>{{ salary }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

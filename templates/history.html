@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 28px;
+            color: #e5e7eb;
+            background:
+                radial-gradient(circle at top, rgba(59, 130, 246, 0.20), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.10), transparent 28%),
+                linear-gradient(135deg, #08111d, #0f172a 45%, #111827);
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .title-box {
+            flex: 1;
+            min-width: 260px;
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 24px 28px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .title-box h1 {
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .title-box p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #67e8f9;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+            border-color: rgba(34, 211, 238, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .history-card {
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .history-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .history-title {
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .history-badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(6, 182, 212, 0.14);
+            color: #67e8f9;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .history-item {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 16px 18px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            font-size: 15px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.20);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .history-content {
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .history-index {
+            color: #67e8f9;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .delete-form {
+            margin: 0;
+        }
+
+        .delete-btn {
+            background: rgba(244, 63, 94, 0.14);
+            color: #fecdd3;
+            border: 1px solid rgba(251, 113, 133, 0.25);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            background: rgba(244, 63, 94, 0.22);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .empty-box {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 20px;
+            color: #94a3b8;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 18px;
+            }
+
+            .title-box,
+            .history-card {
+                padding: 20px;
+            }
+
+            .title-box h1 {
+                font-size: 24px;
+            }
+
+            .history-title {
+                font-size: 20px;
+            }
+
+            .history-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .delete-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="topbar">
+            <div class="title-box">
+                <h1>History Dashboard</h1>
+                <p>View and manage recent activity entries. Keep what you want and remove what you do not need.</p>
+            </div>
+            <a href="{{ url_for('home') }}" class="back-btn">← Home</a>
+        </div>
+
+        <div class="history-card">
+            <div class="history-head">
+                <h2 class="history-title">Recent History</h2>
+                <span class="history-badge">Last 20 of {{ total }}</span>
+            </div>
+
+            {% if not logged_in %}
+            <div class="empty-box">
+                Please <a href="{{ url_for('login') }}" style="color:#67e8f9; font-weight:700;">log in</a>
+                to view and manage your activity history.
+            </div>
+            {% elif history %}
+            <div class="history-list">
+                {% for real_index, line in history %}
+                <div class="history-item">
+                    <div class="history-content">
+                        <span class="history-index">{{ loop.index }}.</span>
+                        {{ line }}
+                    </div>
+
+                    <form class="delete-form" action="{{ url_for('delete_history', index=real_index) }}" method="POST">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-box">
+                No history entries found.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Gap Analysis</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: #e5e7eb;
+            background:
+                radial-gradient(circle at top, rgba(59, 130, 246, 0.22), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.12), transparent 28%),
+                linear-gradient(135deg, #08111d, #0f172a 45%, #111827);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 560px;
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 38px 32px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+            text-align: center;
+        }
+
+        .home-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #67e8f9;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .home-link:hover {
+            color: #ffffff;
+            border-color: rgba(34, 211, 238, 0.35);
+            transform: translateY(-1px);
+        }
+
+        h2 {
+            margin: 0 0 12px 0;
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            margin: 0 0 28px 0;
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 10px;
+            color: #e2e8f0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            background: rgba(15, 23, 42, 0.95);
+            color: #f8fafc;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 20px;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(34, 211, 238, 0.45);
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.10);
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        .select-wrap {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .select-wrap select {
+            margin-bottom: 0;
+            appearance: none;
+        }
+
+        .select-wrap::after {
+            content: "▼";
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #67e8f9;
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(90deg, #06b6d4, #2563eb);
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.25s ease;
+            box-shadow: 0 10px 22px rgba(37, 99, 235, 0.28);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(90deg, #0891b2, #1d4ed8);
+            box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35);
+        }
+
+        .footer-text {
+            margin-top: 18px;
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <a href="{{ url_for('home') }}" class="home-link">← Home</a>
+        <h2>Skill Gap Analysis</h2>
+        <p class="subtitle">Enter your current skills and choose a target role to see what you need to improve next.</p>
+
+        <form action="/gap" method="post">
+            <label for="skills">Your Skills</label>
+            <input
+                type="text"
+                name="skills"
+                id="skills"
+                placeholder="Example: Python, SQL, Machine Learning"
+                required
+            >
+
+            <label for="role">Choose Role</label>
+            <div class="select-wrap">
+                <select name="role" id="role" required>
+                    <option value="" selected disabled hidden>Select a role</option>
+                    {% for role in roles %}
+                    <option value="{{ role }}">{{ role }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Analyze Gap</button>
+        </form>
+
+        <p class="footer-text">Identify missing skills and build your learning path.</p>
+    </div>
+</body>
+</html>

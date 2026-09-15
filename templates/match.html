@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Match</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 28px;
+            color: #e5e7eb;
+            background:
+                radial-gradient(circle at top, rgba(59, 130, 246, 0.20), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.10), transparent 28%),
+                linear-gradient(135deg, #08111d, #0f172a 45%, #111827);
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .title-box {
+            flex: 1;
+            min-width: 260px;
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 24px 28px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .title-box h1 {
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .title-box p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #67e8f9;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+            border-color: rgba(34, 211, 238, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .results-panel {
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .panel-title {
+            margin: 0 0 20px 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .match-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .match-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 22px;
+        }
+
+        .match-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(6, 182, 212, 0.14);
+            color: #67e8f9;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .role-name {
+            margin: 0;
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+        }
+
+        .info-box {
+            background: rgba(30, 41, 59, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 14px 16px;
+        }
+
+        .info-label {
+            color: #94a3b8;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .empty-box {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 24px;
+            color: #94a3b8;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 18px;
+            }
+
+            .title-box,
+            .results-panel,
+            .match-card {
+                padding: 20px;
+            }
+
+            .title-box h1 {
+                font-size: 24px;
+            }
+
+            .panel-title,
+            .role-name {
+                font-size: 20px;
+            }
+
+            .info-value {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="topbar">
+            <div class="title-box">
+                <h1>Career Match Results</h1>
+                <p>Explore the top career options based on the skills you entered.</p>
+            </div>
+            <a href="javascript:history.back()" class="back-btn">← Back</a>
+        </div>
+
+        <div class="results-panel">
+            <h2 class="panel-title">Best Matching Careers</h2>
+
+            {% if matches %}
+                <div class="match-list">
+                    {% for role, pct, ess, demand, salary in matches %}
+                        <div class="match-card">
+                            <div class="match-head">
+                                <h3 class="role-name">{{ role }}</h3>
+                                <span class="rank-badge">Rank {{ loop.index }}</span>
+                            </div>
+
+                            <div class="match-grid">
+                                <div class="info-box">
+                                    <div class="info-label">Match Percentage</div>
+                                    <div class="info-value">{{ pct }}%</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="info-label">Demand</div>
+                                    <div class="info-value">{{ demand }}</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="info-label">Salary</div>
+                                    <div class="info-value">{{ salary }}</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="info-label">Essential Skills Matched</div>
+                                    <div class="info-value">{{ ess }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-box">
+                    No strong career matches found.<br>
+                    Try adding more relevant skills.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
